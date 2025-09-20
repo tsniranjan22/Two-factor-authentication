@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Colorful 2FA Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      background: #ffffff;
+      color: #333;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+      width: 320px;
+      transition: all 0.3s ease;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #764ba2;
+    }
+
+    input[type="text"], input[type="password"], input[type="number"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #f1f3f6;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #5a67d8, #6b46c1);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .success {
+      text-align: center;
+      color: #38a169;
+      font-size: 18px;
+    }
+
+    .error {
+      color: #e53e3e;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .icon {
+      text-align: center;
+      font-size: 40px;
+      margin-bottom: 10px;
+      color: #667eea;
+    }
+
+    .success-icon {
+      color: #38a169;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Form -->
+  <div class="container" id="login-container">
+    <div class="icon">🔐</div>
+    <h2>Login to Continue</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <div class="error" id="login-error"></div>
+  </div>
+
+  <!-- OTP Verification -->
+  <div class="container hidden" id="otp-container">
+    <div class="icon">📩</div>
+    <h2>Enter OTP Code</h2>
+    <input type="number" id="otp-input" placeholder="6-digit OTP" />
+    <button onclick="verifyOTP()">Verify</button>
+    <div class="error" id="otp-error"></div>
+  </div>
+
+  <!-- Success Message -->
+  <div class="container hidden" id="success-container">
+    <div class="icon success-icon">✅</div>
+    <h2 class="success">Login Successful!</h2>
+  </div>
+
+  <script>
+    const fakeUsername = "user123";
+    const fakePassword = "password123";
+    let generatedOTP = "123456";
+
+    function generateOTP() {
+      return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
+    function login() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const errorDiv = document.getElementById("login-error");
+
+      if (username === fakeUsername && password === fakePassword) {
+        errorDiv.textContent = "";
+        generatedOTP = generateOTP();
+        alert("🔐 Your OTP is: " + generatedOTP); // Simulate sending OTP
+        document.getElementById("login-container").classList.add("hidden");
+        document.getElementById("otp-container").classList.remove("hidden");
+      } else {
+        errorDiv.textContent = "❌ Invalid username or password.";
+      }
+    }
+
+    function verifyOTP() {
+      const enteredOTP = document.getElementById("otp-input").value.trim();
+      const errorDiv = document.getElementById("otp-error");
+
+      if (enteredOTP === generatedOTP) {
+        errorDiv.textContent = "";
+        document.getElementById("otp-container").classList.add("hidden");
+        document.getElementById("success-container").classList.remove("hidden");
+      } else {
+        errorDiv.textContent = "❌ Incorrect OTP. Please try again.";
+      }
+    }
+  </script>
+</body>
+</html>
